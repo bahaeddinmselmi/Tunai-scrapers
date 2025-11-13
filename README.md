@@ -1,4 +1,4 @@
-# TunisAI Scrapers
+# TunAI Scrapers
 
 Standalone data collection scripts used for building a Tunisian AI assistant. This repo contains modular collectors for Reddit, old Reddit (Playwright), Google CSE, Tunisia-Sat, Derja Ninja, generic sites, YouTube, X/Twitter, and Facebook groups.
 
