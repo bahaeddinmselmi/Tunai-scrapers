@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environments
+.env
+.venv/
+.venv311/
+
+# Editors/OS
+.vscode/
+.idea/
+.DS_Store
+
+# Data outputs
+.cache/
+collectors/reddit_storage.json
+playwright*.zip
+playwright*
+
+data/raw/
+data/processed/
+logs/
