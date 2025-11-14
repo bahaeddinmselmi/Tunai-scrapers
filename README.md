@@ -4,21 +4,15 @@ Standalone data collection scripts used for building a Tunisian AI assistant. Th
 
 ## Quick start
 
-1) Create and activate a Python 3.11 venv
-- Windows PowerShell
+1) Install uv (if not already installed)
+2) Install dependencies
 ```
-python -m venv .venv
-. .\.venv\Scripts\Activate.ps1
-```
-
-2) Install requirements
-```
-pip install -r requirements.txt
+uv sync
 ```
 
 3) Install Playwright browsers (for the old.reddit.com collector)
 ```
-python -m playwright install
+uv run playwright install
 ```
 
 4) Copy `.env.example` to `.env` and fill credentials as needed

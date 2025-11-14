@@ -1,0 +1,17 @@
+[project]
+name = "tunai-scrapers"
+version = "0.1.0"
+requires-python = ">=3.11"
+
+dependencies = [
+    "python-dotenv>=1.0.0",
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.2",
+    "lxml>=5.1.0",
+    "praw>=7.7.1",
+    "playwright>=1.47.0",
+    "tweepy>=4.14.0",
+    "google-api-python-client>=2.139.0",
+    "youtube-transcript-api>=0.6.2",
+    "pytube>=15.0.0",
+]
