@@ -75,6 +75,13 @@ python collectors/collect_facebook.py --groups https://www.facebook.com/groups/<
   --out data/raw/facebook_groups.jsonl --per_group_limit 300
 ```
 
+## Benchmarking
+
+Compare collector performance:
+```
+uv run --extra benchmark python -m benchmarks.runner --collector tunisia_sat --limit 10
+```
+
 ## Notes
 - Respect robots.txt and site terms. The collectors include basic robots checks where applicable.
 - Playwright collector persists session storage via `--storage` so you can login once, then reuse.
