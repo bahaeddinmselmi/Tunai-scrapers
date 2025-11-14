@@ -28,7 +28,6 @@ class TunisiaSatSpider(VocabularyMixin, TunaiScrapersSpider):
         },
     }
 
-    # Paths to skip when crawling
     SKIP_PATH_PREFIXES = (
         "/login",
         "/logout",
@@ -57,21 +56,17 @@ class TunisiaSatSpider(VocabularyMixin, TunaiScrapersSpider):
 
         url = response.url
 
-        # Extract thread posts if this is a thread page
         if self._is_thread_url(url):
             yield from self._parse_thread(response)
 
-        # Extract page text
         text = extract_text(response.text)
         if text:
             yield TunisiaSatPage(url=url, text=text)
             self.update_vocabulary(text)
 
-        # Stop if we've hit the limit
         if not self.should_schedule_more():
             return
 
-        # Handle pagination and link following
         yield from self._follow_links(response)
 
     def _parse_thread(self, response: Response) -> Iterator[TunisiaSatPost]:
@@ -84,15 +79,12 @@ class TunisiaSatSpider(VocabularyMixin, TunaiScrapersSpider):
 
     def _extract_post(self, article, thread_url: str) -> TunisiaSatPost | None:
         """Extract a single post from an article element."""
-        # Extract post ID
         pid = article.css("::attr(data-content)").get() or article.css("::attr(id)").get() or ""
 
-        # Extract text content
         text = self._extract_post_text(article)
         if not text or len(text) <= MIN_POST_TEXT_LENGTH:
             return None
 
-        # Extract metadata
         author = self._extract_author(article)
         datetime = article.css("time::attr(datetime)").get()
 

@@ -101,7 +101,6 @@ class TunaiScrapersSpider(scrapy.Spider):
         if not href:
             return None
 
-        # skip javascript and mailto links
         if href.startswith(("javascript:", "mailto:", "#")):
             return None
 
@@ -110,11 +109,9 @@ class TunaiScrapersSpider(scrapy.Spider):
             abs_url, _ = urldefrag(abs_url)
             p = urlparse(abs_url)
 
-            # Validate scheme
             if p.scheme not in ("http", "https"):
                 return None
 
-            # Validate domain if specified
             if allowed_domains and p.netloc not in allowed_domains:
                 return None
 

@@ -9,12 +9,12 @@ from tunai_scrapers.utils.text import extract_text, extract_tokens, split_senten
 class Priority:
     """Request priority constants for consistent scheduling."""
 
-    CRITICAL = 200  # Must process immediately
-    PAGINATION = 100  # Thread/page pagination
-    THREAD = 50  # Thread or important content links
-    POST = 40  # Individual posts or comments
-    NORMAL = 0  # Default priority
-    LOW = -10  # Low priority content
+    CRITICAL = 200
+    PAGINATION = 100
+    THREAD = 50
+    POST = 40
+    NORMAL = 0
+    LOW = -10
 
 
 class VocabularyMixin:
@@ -116,7 +116,6 @@ class ContentExtractionMixin:
     and skip patterns.
     """
 
-    # Override these in subclasses for customization
     CONTENT_SELECTORS = ["article", "main", "div.content", "div.post"]
     TEXT_ELEMENT_SELECTORS = ["h1", "h2", "h3", "p", "li", "blockquote", "div.text"]
     SKIP_SELECTORS = ["script", "style", "nav", "footer", "noscript", "svg", "form", "iframe"]
@@ -130,7 +129,7 @@ class ContentExtractionMixin:
         Returns:
             Extracted and cleaned text
         """
-        # Use utility function for now, can be customized later
+        # use utility function for now, can be customized later
         return extract_text(response.text)
 
     def extract_title(self, response) -> str | None:
@@ -206,7 +205,7 @@ class URLValidationMixin:
                 allowed_domains = getattr(self, "allowed_domains", [])
 
             if not allowed_domains:
-                return True  # No restrictions if no domains specified
+                return True
 
             return domain in allowed_domains
         except Exception:
@@ -233,7 +232,7 @@ class URLValidationMixin:
                 skip_patterns = getattr(self, "SKIP_PATH_PREFIXES", ())
 
             if not skip_patterns:
-                return False  # Don't skip if no patterns specified
+                return False
 
             return any(path.startswith(pattern) for pattern in skip_patterns)
         except Exception:
