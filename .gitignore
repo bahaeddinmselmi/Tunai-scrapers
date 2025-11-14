@@ -4,6 +4,7 @@ __pycache__/
 *.pyo
 *.pyd
 .ruff_cache/
+.mypy_cache/
 
 # Environments
 .env
