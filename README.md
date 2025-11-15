@@ -75,11 +75,22 @@ python collectors/collect_facebook.py --groups https://www.facebook.com/groups/<
   --out data/raw/facebook_groups.jsonl --per_group_limit 300
 ```
 
+## Scrapy Spiders
+
+Run scrapy implementation of Tunisia-Sat:
+```
+uv run scrapy crawl tunisia_sat -a max_pages=10
+```
+
 ## Benchmarking
 
 Compare collector performance:
 ```
+# Legacy collector
 uv run --extra benchmark python -m benchmarks.runner --collector tunisia_sat --limit 10
+
+# Scrapy implementation  
+uv run --extra benchmark python -m benchmarks.runner --collector scrapy_tunisia_sat --limit 10
 ```
 
 ## Notes
