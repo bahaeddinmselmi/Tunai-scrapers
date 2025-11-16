@@ -105,4 +105,4 @@ uv run --extra benchmark python -m benchmarks.runner --collector scrapy_tunisia_
   - processed/
 
 ## License
-- Provide your preferred license for redistribution and usage.
+- MIT.
