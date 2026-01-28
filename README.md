@@ -1,108 +1,93 @@
-# TunAI Scrapers
+# 🇹🇳 TunAI Scrapers Collection
 
-Standalone data collection scripts used for building a Tunisian AI assistant. This repo contains modular collectors for Reddit, old Reddit (Playwright), Google CSE, Tunisia-Sat, Derja Ninja, generic sites, YouTube, X/Twitter, and Facebook groups.
+> A comprehensive suite of modular data collectors designed to build the largest **Tunisian Arabic (Derja)** dataset for AI training.
 
-## Quick start
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://python.org)
+[![Playwright](https://img.shields.io/badge/Playwright-Enabled-green)](https://playwright.dev)
+[![Scrapy](https://img.shields.io/badge/Scrapy-Ready-orange)](https://scrapy.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-1) Install uv (if not already installed)
-2) Install dependencies
-```
+## 📖 Overview
+
+**TunAI Scrapers** is a specialized toolkit for mining Tunisian dialectal text from the web. It supports multiple platforms and extraction strategies, ensuring a diverse and rich corpus for training Large Language Models (LLMs) and Refined AI Assistants.
+
+### Supported Data Sources
+*   **Reddit**: API-based and Headless Browser (Old Reddit) scraping for deep comment threads.
+*   **Social Media**: Twitter (X) and Facebook Groups.
+*   **Video Platforms**: YouTube transcripts and comments.
+*   **Forums**: Targeted scrapers for *Tunisia-Sat* and *Derja Ninja*.
+*   **Search Engines**: Specific government/educational domain crawling via Google CSE.
+
+## ⚡ Quick Start
+
+### 1. Installation
+This project uses **uv** for fast dependency management.
+
+```bash
+# Install dependencies
 uv sync
-```
 
-3) Install Playwright browsers (for the old.reddit.com collector)
-```
+# Install Playwright browsers (for full rendering)
 uv run playwright install
 ```
 
-4) Copy `.env.example` to `.env` and fill credentials as needed
+### 2. Configuration
+Copy the example environment file and add your API keys:
+
+```bash
+cp .env.example .env
 ```
-REDDIT_CLIENT_ID=your_id
-REDDIT_CLIENT_SECRET=your_secret
-GOOGLE_API_KEY=your_key
-GOOGLE_CX=your_cse_id
-X_BEARER_TOKEN=your_token
-YOUTUBE_API_KEY=your_key
-META_GRAPH_TOKEN=your_token
+*Required keys depend on the collector (e.g., `REDDIT_CLIENT_ID`, `YOUTUBE_API_KEY`).*
+
+## 🕹️ Usage Guide
+
+### 🔴 Reddit
+Collect posts and comments from r/Tunisia or other subreddits.
+```bash
+# Fast API Method
+python collectors/collect_reddit.py --sub Tunisia --limit 500 --with_comments
+
+# Playwright Method (Deep Scraping)
+python collectors/collect_reddit_playwright.py --sub Tunisia --limit 200 --headed
 ```
 
-5) Run collectors (outputs go under `data/` by default)
-- Reddit via API (posts + optional comments)
-```
-python collectors/collect_reddit.py --sub Tunisia --limit 300 --with_comments \
-  --out_posts data/raw/reddit_posts.jsonl --out_comments data/raw/reddit_comments.jsonl
-```
-- Old Reddit (Playwright) with comments expansion
-```
-python collectors/collect_reddit_playwright.py --sub Tunisia --limit 150 --with_comments \
-  --out_posts data/raw/reddit_posts_pw.jsonl --out_comments data/raw/reddit_comments_pw.jsonl --headed
-```
-- Google CSE site-restricted crawl
-```
-python collectors/collect_google_cse.py --query "دارجة تونسية" --site gov.tn,edu.tn \
-  --num 30 --out data/raw/google_cse.jsonl
-```
-- Tunisia-Sat forum posts + raw pages
-```
-python collectors/collect_tunisia_sat.py --max_pages 200 \
-  --out_vocab data/processed/tunisia_sat_words.json \
-  --out_raw data/raw/tunisia_sat_pages.jsonl \
-  --out_posts data/raw/tunisia_sat_posts.jsonl
-```
-- Derja Ninja vocabulary + raw pages + flashcard-like triples
-```
-python collectors/collect_derja_ninja.py --max_pages 150 \
-  --out_vocab data/processed/derja_ninja_words.json \
-  --out_raw data/raw/derja_ninja_pages.jsonl \
-  --out_cards data/raw/derja_ninja_cards.jsonl
-```
-- Generic multi-site crawler
-```
-python collectors/collect_sites.py --start_urls https://www.gov.tn,https://www.pm.gov.tn \
-  --domains gov.tn,pm.gov.tn --max_pages 100 --out data/raw/sites.jsonl
-```
-- YouTube transcripts
-```
-python collectors/collect_youtube.py --search "darija tunisienne" --pages 2 --out data/raw/youtube_tn.jsonl
-```
-- X / Twitter recent search (requires token)
-```
-python collectors/collect_x.py --limit 1000 --out data/raw/x_tn.jsonl --lang ar --hashtags derja,تونس
-```
-- Facebook group feed (requires proper app permissions)
-```
-python collectors/collect_facebook.py --groups https://www.facebook.com/groups/<groupid> \
-  --out data/raw/facebook_groups.jsonl --per_group_limit 300
+### 🔵 Facebook & Twitter
+Mine social sentiment and dialectal variations.
+```bash
+# Twitter (X)
+python collectors/collect_x.py --lang ar --hashtags "تونس,derja"
+
+# Facebook Groups
+python collectors/collect_facebook.py --groups <GROUP_ID> --per_group_limit 1000
 ```
 
-## Scrapy Spiders
+### 🟢 Niche Platforms
+Scrape specialized forums for high-quality Derja.
+```bash
+# Tunisia-Sat Forum
+python collectors/collect_tunisia_sat.py --max_pages 500
 
-Run scrapy implementation of Tunisia-Sat:
-```
-uv run scrapy crawl tunisia_sat -a max_pages=10
-```
-
-## Benchmarking
-
-Compare collector performance:
-```
-# Legacy collector
-uv run --extra benchmark python -m benchmarks.runner --collector tunisia_sat --limit 10
-
-# Scrapy implementation  
-uv run --extra benchmark python -m benchmarks.runner --collector scrapy_tunisia_sat --limit 10
+# Derja Ninja (Vocabulary)
+python collectors/collect_derja_ninja.py
 ```
 
-## Notes
-- Respect robots.txt and site terms. The collectors include basic robots checks where applicable.
-- Playwright collector persists session storage via `--storage` so you can login once, then reuse.
-- Outputs are JSONL for easy downstream processing.
+## 🕷️ Scrapy Data Pipelines
+For high-performance crawling, use the Scrapy implementation:
+```bash
+uv run scrapy crawl tunisia_sat -a max_pages=100
+```
 
-## Structure
-- collectors/  # individual scripts
-- data/
-  - raw/
-  - processed/
+## 📂 Project Structure
+```
+.
+├── benchmarks/      # Performance comparison tools
+├── collectors/      # Standalone scripts (Reddit, FB, YT, etc.)
+├── tunai_scrapers/  # Scrapy spiders project
+├── data/            # Output directory
+│   ├── raw/
+│   └── processed/
+└── pyproject.toml
+```
 
-## License
-- MIT.
+## 📄 License
+MIT
